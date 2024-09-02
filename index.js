@@ -11,6 +11,7 @@ const {
   handleValidationErrors,
 } = require("./scripts/payments-and-validation/validatesData.js");
 const { getProducts } = require("./scripts/products/getProducts.js");
+const { getProductName } = require("./scripts/products/getProductName.js");
 
 const app = express();
 app.use(bodyParser.json());
@@ -33,6 +34,9 @@ app.post("/webhook", (req, res) => {
 
 app.get("/products", async (req, res) => {
   await getProducts(req, res);
+});
+app.get("/products/:name", async (req, res) => {
+  await getProductName(req, res);
 });
 
 app.use((err, req, res, next) => {
