@@ -61,9 +61,9 @@ function preferencePayment(data, req, res) {
 
   preferences
     .create({ body: preferenceData })
-    .then((response) => {
+    .then(async (response) => {
       if (response.id) {
-        getIdPreference(response.id);
+        await getIdPreference(response.id);
       }
       res.json({ init_point: response.init_point });
     })

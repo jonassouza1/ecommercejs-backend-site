@@ -19,7 +19,7 @@ const generateSignature = (dataID, xRequestId, ts) => {
   return crypto.createHmac("sha256", secret).update(manifest).digest("hex");
 };
 
-const webhook = (req, res) => {
+const webhook = async (req, res) => {
   const { body, headers } = req;
   const { "x-signature": xSignature, "x-request-id": xRequestId } = headers;
 
@@ -51,7 +51,7 @@ const webhook = (req, res) => {
   } else {
     console.log("Nova notificação válida:", body);
     processedNotifications.add(dataID);
-    checkPaymentStatus(dataID);
+    await checkPaymentStatus(dataID);
   }
 
   res.sendStatus(200);

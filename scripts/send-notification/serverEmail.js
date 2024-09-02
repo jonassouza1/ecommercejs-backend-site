@@ -7,6 +7,7 @@ let emailData = {
 };
 
 async function serverEmailNotification(status, data) {
+  // console.log(status, data);
   if (status) {
     emailData.status = status;
   }
@@ -32,6 +33,8 @@ async function sendEmail(status, data) {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+    logger: true,
+    debug: true,
   });
 
   let mailOptions = {

@@ -22,7 +22,6 @@ const fetchFromApi = async (endpoint) => {
     if (!response.ok) {
       throw new Error(`Erro na requisição: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
     console.error("Erro ao consultar a API:", error);
@@ -32,18 +31,19 @@ const fetchFromApi = async (endpoint) => {
 
 async function checkPaymentStatus(paymentId) {
   if (!paymentId) {
+    console.log("ID do pagamento não fornecido");
     console.error("ID do pagamento não fornecido");
     return;
   }
 
   const paymentData = await fetchFromApi(`/v1/payments/${paymentId}`);
   const status = paymentData.status;
-
-  serverEmailNotification(status, null);
+  await serverEmailNotification(status, null);
 }
 
 async function getIdPreference(id) {
   if (!id) {
+    console.log("ID da preferência de pagamento não fornecido");
     console.error("ID da preferência de pagamento não fornecido");
     return;
   }
@@ -56,7 +56,7 @@ async function getIdPreference(id) {
     productPurchased: preferenceData.items,
   };
 
-  serverEmailNotification(null, data);
+  await serverEmailNotification(null, data);
 }
 
 module.exports = { checkPaymentStatus, getIdPreference };

@@ -2,7 +2,6 @@ const fetch = require("node-fetch");
 require("dotenv").config({ path: "../../.env.development" });
 
 const baseUrl = process.env.API_URL || "http://localhost:5502/products";
-console.log(baseUrl);
 async function getProductName(req, res) {
   let { name } = req.params;
   name.trim();
