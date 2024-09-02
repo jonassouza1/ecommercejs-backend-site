@@ -1,14 +1,16 @@
 const fetch = require("node-fetch");
 require("dotenv").config({ path: "../../.env.development" });
+
+const baseUrl = process.env.API_URL || "http://localhost:5502/products";
 async function getProducts(req, res) {
   const { category_name } = req.query;
 
   try {
     // Construir a URL com base no parâmetro de query, se existir
-    let url = "http://localhost:5502/products";
+    let url = baseUrl;
     if (category_name) {
       const query = new URLSearchParams({ category_name }).toString();
-      url = `${url}?${query}`;
+      url = `${baseUrl}?${query}`;
     }
 
     const response = await fetch(url, {
