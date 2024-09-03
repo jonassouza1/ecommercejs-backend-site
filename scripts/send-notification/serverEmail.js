@@ -28,7 +28,10 @@ async function sendEmail(status, data) {
   console.log("Data:", data);
 
   let transporter = nodemailer.createTransport({
-    service: "yahoo",
+    host: "smtp.mail.yahoo.com", // Servidor SMTP do Yahoo
+    port: 465, // Porta para SSL/TLS
+    secure: true,
+
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
