@@ -52,7 +52,8 @@ function preferencePayment(data, req, res) {
       },
     },
     back_urls: {
-      success: "http://localhost:5500/pages/sucess.html",
+      success:
+        "https://jonassouza1.github.io/ecommercejs-frontend-site/pages/sucess.html",
       failure: "http://localhost:5500/pages/failed.html",
       pending: "http://localhost:5500/pages/pending.html",
     },
