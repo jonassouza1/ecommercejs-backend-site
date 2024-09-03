@@ -22,6 +22,7 @@ const fetchFromApi = async (endpoint) => {
     if (!response.ok) {
       throw new Error(`Erro na requisição: ${response.statusText}`);
     }
+
     return await response.json();
   } catch (error) {
     console.error("Erro ao consultar a API:", error);
@@ -31,32 +32,39 @@ const fetchFromApi = async (endpoint) => {
 
 async function checkPaymentStatus(paymentId) {
   if (!paymentId) {
-    console.log("ID do pagamento não fornecido");
     console.error("ID do pagamento não fornecido");
     return;
   }
 
-  const paymentData = await fetchFromApi(`/v1/payments/${paymentId}`);
-  const status = paymentData.status;
-  await serverEmailNotification(status, null);
+  try {
+    const paymentData = await fetchFromApi(`/v1/payments/${paymentId}`);
+    const status = paymentData.status;
+
+    await serverEmailNotification(status, null);
+  } catch (error) {
+    console.error("Erro ao verificar status do pagamento:", error);
+  }
 }
 
 async function getIdPreference(id) {
   if (!id) {
-    console.log("ID da preferência de pagamento não fornecido");
     console.error("ID da preferência de pagamento não fornecido");
     return;
   }
 
-  const preferenceData = await fetchFromApi(`/checkout/preferences/${id}`);
+  try {
+    const preferenceData = await fetchFromApi(`/checkout/preferences/${id}`);
 
-  const data = {
-    user: preferenceData.payer,
-    address: preferenceData.shipments?.receiver_address,
-    productPurchased: preferenceData.items,
-  };
+    const data = {
+      user: preferenceData.payer,
+      address: preferenceData.shipments?.receiver_address || {},
+      productPurchased: preferenceData.items,
+    };
 
-  await serverEmailNotification(null, data);
+    await serverEmailNotification(null, data);
+  } catch (error) {
+    console.error("Erro ao buscar a preferência de pagamento:", error);
+  }
 }
 
 module.exports = { checkPaymentStatus, getIdPreference };
